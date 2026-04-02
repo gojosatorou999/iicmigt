@@ -1,0 +1,1966 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Idea Incubator — MGIT Info Portal</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+    :root {
+      --bg: #E8F4FD;
+      --bg-section: #F0F8FF;
+      --card: #FFFFFF;
+      --text: #1A1A1A;
+      --text-secondary: #4A5568;
+      --accent: #F5C518;
+      --accent-hover: #D4A900;
+      --border: #E2E8F0;
+      --nav-bg: rgba(232, 244, 253, 0.85);
+    }
+
+    [data-theme="dark"] {
+      --bg: #0A0F1E;
+      --bg-section: #0D1526;
+      --card: #111827;
+      --text: #F1F5F9;
+      --text-secondary: #94A3B8;
+      --accent: #F5C518;
+      --accent-hover: #D4A900;
+      --border: #1E293B;
+      --nav-bg: rgba(10, 15, 30, 0.85);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      transition: background 0.3s ease, color 0.3s ease;
+      overflow-x: hidden;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-family: 'Syne', sans-serif;
+    }
+
+    a:focus-visible,
+    button:focus-visible,
+    input:focus-visible,
+    select:focus-visible,
+    textarea:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      padding: 16px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+      transition: background 0.3s;
+      background: var(--nav-bg);
+    }
+
+    nav.scrolled {
+      backdrop-filter: blur(12px);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .nav-left img {
+      height: 44px;
+    }
+
+    .nav-left img:first-child {
+      border-radius: 50%;
+    }
+
+    .nav-divider {
+      width: 1px;
+      height: 32px;
+      background: var(--border);
+    }
+
+    .nav-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--accent);
+    }
+
+    .theme-toggle {
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-size: 1.2rem;
+      color: var(--text);
+    }
+
+    .hamburger {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    .hero {
+      position: relative;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #orb-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      display: block;
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      color: white;
+      padding: 0 20px;
+      max-width: 720px;
+    }
+
+    .hero-logos {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      align-items: center;
+      margin-bottom: 24px;
+      filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
+    }
+
+    .hero-logos img {
+      height: 56px;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .hero h1 {
+      font-size: 4rem;
+      font-weight: 800;
+      margin-bottom: 16px;
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      color: #E2E8F0;
+      margin-bottom: 32px;
+      font-weight: 400;
+    }
+
+    .cta-btn {
+      background: var(--accent);
+      color: #000;
+      padding: 14px 32px;
+      border-radius: 100px;
+      text-decoration: none;
+      font-weight: 600;
+      display: inline-block;
+      transition: background 0.3s;
+    }
+
+    .cta-btn:hover {
+      background: var(--accent-hover);
+    }
+
+    [data-theme="light"] .hero h1 {
+      color: #1A1A1A;
+    }
+
+    [data-theme="light"] .hero p {
+      color: #2D3748;
+    }
+
+    section {
+      padding: 80px 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      font-size: 2.5rem;
+      margin-bottom: 8px;
+    }
+
+    .title-underline {
+      width: 60px;
+      height: 4px;
+      background: var(--accent);
+      margin-bottom: 40px;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 60% 35%;
+      gap: 5%;
+      align-items: center;
+    }
+
+    .about-text p {
+      margin-bottom: 16px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .stats-col {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .stat-card {
+      background: var(--card);
+      padding: 24px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      text-align: center;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    .stat-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .stat-num {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--accent);
+      font-family: 'Syne', sans-serif;
+    }
+
+    .stat-label {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .marquee-wrapper {
+      width: 100vw;
+      margin-left: calc(-50vw + 50%);
+      margin-top: 60px;
+      overflow: hidden;
+      background: var(--card);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 0;
+    }
+
+    .marquee {
+      display: flex;
+      width: max-content;
+      animation: scroll 20s linear infinite;
+    }
+
+    .marquee span {
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-right: 48px;
+    }
+
+    @keyframes scroll {
+      to {
+        transform: translateX(-50%);
+      }
+    }
+
+    .ecosystem-section {
+      background: var(--bg-section);
+      width: 100vw;
+      margin-left: calc(-50vw + 50%);
+      padding: 80px 0;
+    }
+
+    .eco-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .eco-sub {
+      color: var(--text-secondary);
+      margin-bottom: 40px;
+      margin-top: -20px;
+      font-size: 1.1rem;
+    }
+
+    .eco-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 32px;
+    }
+
+    .eco-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 32px 24px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .eco-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .eco-top {
+      height: 4px;
+      background: var(--accent);
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+    }
+
+    .eco-icon {
+      font-size: 2rem;
+      margin-bottom: 16px;
+    }
+
+    .eco-badge {
+      align-self: flex-start;
+      background: var(--bg-section);
+      padding: 4px 12px;
+      border-radius: 100px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+    }
+
+    .eco-title {
+      font-size: 1.5rem;
+      margin-bottom: 16px;
+    }
+
+    .eco-desc {
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 24px;
+      flex-grow: 1;
+    }
+
+    .eco-link {
+      text-decoration: none;
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 8px 16px;
+      border-radius: 6px;
+      text-align: center;
+      font-weight: 600;
+      transition: border-color 0.3s;
+    }
+
+    .eco-card:hover .eco-link {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .faces-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 32px;
+      margin-top: 60px;
+    }
+
+    .face-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 40px 24px;
+      text-align: center;
+      position: relative;
+      transition: transform 0.3s;
+    }
+
+    .face-card:hover {
+      transform: scale(1.02);
+      box-shadow: 0 0 0 2px var(--accent);
+    }
+
+    .face-badge {
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--accent);
+      color: #000;
+      padding: 6px 16px;
+      border-radius: 100px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .face-avatar {
+      width: 80px;
+      height: 80px;
+      background: var(--accent);
+      color: #000;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      font-weight: 800;
+      font-family: 'Syne', sans-serif;
+      margin: 0 auto 20px;
+    }
+
+    .face-name {
+      font-size: 1.5rem;
+      margin-bottom: 8px;
+    }
+
+    .face-role {
+      color: var(--text-secondary);
+      font-weight: 600;
+      margin-bottom: 16px;
+      font-size: 0.95rem;
+    }
+
+    .face-desc {
+      color: var(--text-secondary);
+      line-height: 1.5;
+      font-size: 0.95rem;
+    }
+
+    .team-tabs {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 32px;
+      justify-content: center;
+    }
+
+    .tab {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 8px 24px;
+      border-radius: 100px;
+      color: var(--text);
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .tab.active,
+    .tab:hover {
+      background: var(--accent);
+      color: #000;
+      border-color: var(--accent);
+    }
+
+    .heads-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 24px;
+      margin-bottom: 48px;
+    }
+
+    .head-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .head-top {
+      height: 6px;
+      background: var(--accent);
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+    }
+
+    .head-badge {
+      display: inline-block;
+      background: var(--accent);
+      color: #000;
+      padding: 2px 10px;
+      border-radius: 100px;
+      font-size: 0.7rem;
+      font-weight: 800;
+      margin-bottom: 16px;
+    }
+
+    .head-avatar {
+      width: 64px;
+      height: 64px;
+      background: var(--accent);
+      color: #000;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin: 0 auto 16px;
+    }
+
+    .head-name {
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin-bottom: 4px;
+    }
+
+    .head-role {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    .members-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 16px;
+    }
+
+    .member-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+    }
+
+    .member-avatar {
+      width: 48px;
+      height: 48px;
+      background: var(--border);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      margin: 0 auto 12px;
+    }
+
+    .member-name {
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-bottom: 4px;
+    }
+
+    .member-domain {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      background: var(--bg-section);
+      padding: 4px 8px;
+      border-radius: 6px;
+      display: inline-block;
+    }
+
+    .alumni-strip-container {
+      overflow: hidden;
+      margin-top: 24px;
+    }
+
+    .alumni-strip {
+      display: flex;
+      gap: 24px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      padding-bottom: 24px;
+      cursor: grab;
+    }
+
+    .alumni-strip::-webkit-scrollbar {
+      display: none;
+    }
+
+    .alumni-card {
+      min-width: 220px;
+      flex-shrink: 0;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .alumni-badge {
+      display: inline-block;
+      background: var(--bg-section);
+      color: var(--text-secondary);
+      padding: 4px 12px;
+      border-radius: 100px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .alumni-avatar {
+      width: 48px;
+      height: 48px;
+      background: var(--bg-section);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: var(--text-secondary);
+      margin: 0 auto 12px;
+    }
+
+    .alumni-name {
+      font-weight: 700;
+      font-size: 1.05rem;
+      margin-bottom: 4px;
+      color: var(--text-secondary);
+    }
+
+    .alumni-role {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      margin-bottom: 4px;
+    }
+
+    .alumni-years {
+      font-size: 0.8rem;
+      opacity: 0.8;
+      color: var(--text-secondary);
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+    }
+
+    .contact-info {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 1.05rem;
+    }
+
+    .contact-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent);
+      font-size: 1.2rem;
+    }
+
+    .contact-form {
+      background: var(--card);
+      padding: 32px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      outline: none;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--accent);
+    }
+
+    .submit-btn {
+      width: 100%;
+      background: var(--accent);
+      color: #000;
+      padding: 14px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .submit-btn:hover {
+      background: var(--accent-hover);
+    }
+
+    footer {
+      background: #0A0F1E;
+      color: #F1F5F9;
+      padding: 60px 20px 40px;
+      text-align: center;
+    }
+
+    .footer-logo {
+      height: 40px;
+      margin-bottom: 16px;
+    }
+
+    .footer-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .footer-tagline {
+      color: #94A3B8;
+      font-size: 0.9rem;
+      margin-bottom: 32px;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: #F1F5F9;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid #1E293B;
+      padding-top: 32px;
+      color: #94A3B8;
+      font-size: 0.85rem;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.6s ease;
+    }
+
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .toast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: var(--card);
+      color: var(--text);
+      padding: 16px 24px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      border-left: 4px solid var(--accent);
+      transform: translateX(150%);
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      z-index: 2000;
+      font-weight: 600;
+    }
+
+    .toast.show {
+      transform: translateX(0);
+    }
+
+    .mobile-overlay {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      z-index: 99;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+
+    .mobile-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .mobile-overlay a {
+      font-size: 1.5rem;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+
+      .hamburger {
+        display: block;
+      }
+
+      .hero h1 {
+        font-size: 2.2rem;
+      }
+
+      .about-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-content {
+        max-width: 100% !important;
+        padding: 0 16px !important;
+      }
+
+      .hero-logos {
+        justify-content: center !important;
+      }
+
+      #cursor-outer,
+      #cursor-inner {
+        display: none !important;
+      }
+
+      body {
+        cursor: auto !important;
+      }
+
+      .section-title {
+        font-size: 1.8rem;
+      }
+
+      .faces-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+
+      .heads-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 16px;
+      }
+
+      .members-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+
+      .eco-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .blob {
+        display: none;
+      }
+
+      .nav-left img {
+        height: 36px;
+      }
+
+      .nav-title {
+        font-size: 0.85rem;
+      }
+
+      .hero-logos img {
+        height: 48px;
+      }
+
+      .hero-eyebrow {
+        font-size: 0.7rem;
+        letter-spacing: 0.12em;
+      }
+
+      section {
+        padding: 60px 16px;
+      }
+
+      .ecosystem-section {
+        padding: 60px 0;
+      }
+
+      .eco-container {
+        padding: 0 16px;
+      }
+
+      .contact-form {
+        padding: 20px;
+      }
+
+      footer {
+        padding: 40px 16px 24px;
+      }
+
+      .footer-bottom {
+        font-size: 0.75rem;
+      }
+
+      .alumni-strip {
+        padding-left: 16px;
+      }
+    }
+
+
+    /* ── Custom cursor ── */
+    @media (min-width: 769px) {
+      body {
+        cursor: none;
+      }
+    }
+
+    #cursor-outer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 36px;
+      height: 36px;
+      border: 2px solid #F5C518;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      opacity: 0.6;
+      transform: translate(-50%, -50%);
+      transition: width .2s ease, height .2s ease, opacity .2s ease;
+    }
+
+    #cursor-inner {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 6px;
+      height: 6px;
+      background: #F5C518;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+    }
+
+    /* ── Ambient blobs (fixed, site-wide) ── */
+    .blob {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(90px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .blob-1 {
+      width: 500px;
+      height: 500px;
+      background: #F5C518;
+      opacity: 0.06;
+      top: 20%;
+      left: -5%;
+      animation: drift 22s infinite alternate ease-in-out;
+    }
+
+    .blob-2 {
+      width: 400px;
+      height: 400px;
+      background: #0D9488;
+      opacity: 0.05;
+      top: 50%;
+      right: -8%;
+      animation: drift 28s infinite alternate-reverse ease-in-out;
+    }
+
+    .blob-3 {
+      width: 350px;
+      height: 350px;
+      background: #F5C518;
+      opacity: 0.04;
+      bottom: 15%;
+      left: 35%;
+      animation: drift 19s infinite alternate ease-in-out;
+    }
+
+    @keyframes drift {
+      0% {
+        transform: translate(0px, 0px) scale(1);
+      }
+
+      33% {
+        transform: translate(30px, -40px) scale(1.05);
+      }
+
+      66% {
+        transform: translate(-20px, 30px) scale(0.97);
+      }
+
+      100% {
+        transform: translate(40px, 20px) scale(1.02);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Full-page particle canvas background -->
+  <canvas id="orb-canvas"></canvas>
+
+  <!-- Custom cursor -->
+  <div id="cursor-outer"></div>
+  <div id="cursor-inner"></div>
+  <!-- Ambient blobs -->
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+
+  <nav id="navbar">
+    <div class="nav-left">
+      <img src="mgit-logo.jpg" alt="MGIT Logo">
+      <div class="nav-divider"></div>
+      <img src="ii-logo.jpg" alt="Idea Incubator Logo">
+      <span class="nav-title">Idea Incubator · MGIT</span>
+    </div>
+    <div class="nav-right">
+      <div class="nav-links">
+        <a href="#home" class="active">Home</a>
+        <a href="#about">About</a>
+        <a href="#ecosystem">Our Ecosystem</a>
+        <a href="#team">Team</a>
+        <a href="#alumni">Alumni</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <button class="theme-toggle" id="theme-toggle">🌙</button>
+      <button class="hamburger" id="hamburger">☰</button>
+    </div>
+  </nav>
+
+  <div class="mobile-overlay" id="mobile-menu">
+    <a href="#home">Home</a>
+    <a href="#about">About</a>
+    <a href="#ecosystem">Our Ecosystem</a>
+    <a href="#team">Team</a>
+    <a href="#alumni">Alumni</a>
+    <a href="#contact">Contact</a>
+  </div>
+
+  <section id="home" class="hero" style="padding:0; max-width:100%;">
+    <div class="hero-content">
+      <div class="hero-eyebrow">IDEATE · INNOVATE · IGNITE · INSPIRE</div>
+      <h1>Where Ideas Become Ventures</h1>
+      <p>Mahatma Gandhi Institute of Technology — Idea Incubator Club</p>
+      <a href="#about" class="cta-btn">Explore the Club ↓</a>
+    </div>
+  </section>
+
+  <section id="about" class="reveal">
+    <h2 class="section-title">About Idea Incubator</h2>
+    <div class="title-underline"></div>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>Idea Incubator MGIT, is a student club focused on fostering Leadership in innovation and research amongst
+          MGITans. It was founded on 17th April 2019 by the Principal, MGIT as its de facto head. The club conducts
+          Ideathons, Design thinking contests to help students nurture ideas to develop cutting edge technology.</p>
+        <p>The core developer team build deployable apps and works on ideas and also has a banger team for external
+          technical events like hackathons etc.</p>
+        <p><strong>Mission:</strong> The mission of the club is to work on NextGen Projects, collaborate with
+          professionals and companies to enrich research skills, develop an entrepreneurial mindset with professional
+          skills to stand out of the crowd as gems of MGIT and revered researchers of the nation at large.</p>
+        <p><strong>Vision:</strong> IDEATE . INNOVATE . IGNITE . INSPIRE</p>
+      </div>
+      <div class="stats-col" id="stats-section">
+        <div class="stat-card">
+          <div class="stat-num" data-target="70">0</div>
+          <div class="stat-label">Active Members</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" data-target="20">0</div>
+          <div class="stat-label">Projects Launched</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" data-target="5">0</div>
+          <div class="stat-label">Years of Innovation</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="marquee-wrapper">
+      <div class="marquee">
+        <span>#Innovation</span><span>#Entrepreneurship</span><span>#Startups</span><span>#Design</span><span>#Technology</span><span>#MGIT</span><span>#Hyderabad</span><span>#BuildInPublic</span><span>#IIC</span><span>#EDC</span><span>#StudentFounders</span>
+        <!-- Duplicated for seamless loop -->
+        <span>#Innovation</span><span>#Entrepreneurship</span><span>#Startups</span><span>#Design</span><span>#Technology</span><span>#MGIT</span><span>#Hyderabad</span><span>#BuildInPublic</span><span>#IIC</span><span>#EDC</span><span>#StudentFounders</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="ecosystem-section reveal" id="ecosystem">
+    <div class="eco-container">
+      <h2 class="section-title">Our Ecosystem</h2>
+      <div class="title-underline"></div>
+      <p class="eco-sub">Three pillars that power innovation at MGIT</p>
+
+      <div class="eco-grid">
+        <div class="eco-card">
+          <div class="eco-top"></div>
+          <div class="eco-icon">💡</div>
+          <div class="eco-badge">Government Initiative</div>
+          <h3 class="eco-title">IIC — Institution's Innovation Council</h3>
+          <p class="eco-desc">Established by MGIT to promote innovation and entrepreneurship among faculty and students.
+            The IIC fosters a culture of innovation on campus through workshops, events, mentorship, and industry
+            linkages — nurturing ideas into startups and strengthening MGIT's participation in national innovation
+            activities.</p>
+          <a href="https://mgit.ac.in/iic/" target="_blank" rel="noopener" class="eco-link">Visit IIC Page ↗</a>
+        </div>
+
+        <div class="eco-card">
+          <div class="eco-top"></div>
+          <div class="eco-icon">🚀</div>
+          <div class="eco-badge">Entrepreneurship</div>
+          <h3 class="eco-title">EDC — Entrepreneurship Development Cell</h3>
+          <p class="eco-desc">The EDC at MGIT is built on the belief that entrepreneurs can be developed through
+            well-directed activities. It motivates students through EDPs and skill development, fosters industry–R&D
+            linkages, and promotes techno-entrepreneurship for wealth creation and employment across the region.</p>
+          <a href="https://mgit.ac.in/edc/" target="_blank" rel="noopener" class="eco-link">Visit EDC Page ↗</a>
+        </div>
+
+        <div class="eco-card">
+          <div class="eco-top"></div>
+          <div class="eco-icon">🧠</div>
+          <div class="eco-badge">Core Club</div>
+          <h3 class="eco-title">Idea Incubator — The Core Club</h3>
+          <p class="eco-desc">Founded on 17th April 2019, Idea Incubator is MGIT's student-led innovation club. From
+            Ideathons and Design Thinking contests to deployable apps and hackathon wins — this is where MGITans IDEATE
+            · INNOVATE · IGNITE · INSPIRE. The core dev team ships real products. The events team goes to war at
+            national hackathons.</p>
+          <a href="https://www.instagram.com/idea.mgit/" target="_blank" rel="noopener" class="eco-link">Follow on
+            Instagram ↗</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section id="faces" class="reveal">
+    <h2 class="section-title">The Pillars Behind Our Vision</h2>
+    <div class="title-underline"></div>
+    <p class="eco-sub">Faculty leadership and the people who make it happen</p>
+
+    <div class="faces-grid">
+      <div class="face-card">
+        <div class="face-badge">⭐ Key Faculty</div>
+        <div class="face-avatar" style="font-size:0.9rem;">Sabitha</div>
+        <h3 class="face-name">Sabitha Ma'am</h3>
+        <div class="face-role">Faculty Coordinator — Idea Incubator</div>
+        <p class="face-desc" style="color:var(--text-secondary);font-style:italic;">[Profile coming soon]</p>
+      </div>
+
+      <div class="face-card">
+        <div class="face-badge">⭐ Chief Patron</div>
+        <img src="principal.png" alt="Prof. G. ChandraMohan Reddy"
+          style="width:80px;height:80px;border-radius:50%;object-fit:cover;object-position:top;margin:0 auto 20px;display:block;box-shadow:0 4px 12px rgba(0,0,0,0.15);">
+        <h3 class="face-name">Prof. G. ChandraMohan Reddy</h3>
+        <div class="face-role">Principal & Chief Patron — MGIT</div>
+        <p class="face-desc">An experienced academic leader with a demonstrated history in Educational Services and
+          Administration. Skilled in Design & Simulation software, Professional Mentoring, and Finite Element Analysis.
+          The visionary who founded Idea Incubator on 17th April 2019.</p>
+      </div>
+
+      <div class="face-card">
+        <div class="face-badge">⭐ Key Faculty</div>
+        <div class="face-avatar">RK</div>
+        <h3 class="face-name">Rajinikanth Sir</h3>
+        <div class="face-role">Club Incharge — Idea Incubator</div>
+        <p class="face-desc" style="color:var(--text-secondary);font-style:italic;">[Profile coming soon]</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="ecosystem-section reveal" id="team">
+    <div class="eco-container">
+      <h2 class="section-title">The Current Team</h2>
+      <div class="title-underline"></div>
+
+      <div class="team-tabs">
+        <div class="tab active" data-filter="all">All</div>
+        <div class="tab" data-filter="heads">Leadership</div>
+        <div class="tab" data-filter="members">Core Team</div>
+      </div>
+
+      <!-- LEADERSHIP ROW -->
+      <div class="heads-grid" style="grid-template-columns:repeat(auto-fit,minmax(170px,1fr));">
+
+        <div class="head-card">
+          <div class="head-top"></div>
+          <div class="head-badge">CLUB HEAD</div>
+          <img src="head_achut.png" alt="T.Achut Balaji"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+            style="width:64px;height:64px;border-radius:50%;object-fit:cover;object-position:top;margin:0 auto 16px;display:block;">
+          <div class="head-avatar" style="display:none;">AB</div>
+          <div class="head-name">T. Achut Balaji</div>
+          <div class="head-role">Club Head</div>
+        </div>
+
+        <div class="head-card">
+          <div class="head-top"></div>
+          <div class="head-badge">CO-HEAD</div>
+          <img src="head_nivas.jpg" alt="Nivas Salla"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+            style="width:64px;height:64px;border-radius:50%;object-fit:cover;object-position:top;margin:0 auto 16px;display:block;">
+          <div class="head-avatar" style="display:none;">NS</div>
+          <div class="head-name">Nivas Salla</div>
+          <div class="head-role">Co-Head</div>
+        </div>
+
+        <div class="head-card">
+          <div class="head-top"></div>
+          <div class="head-badge">EX-HEAD</div>
+          <img src="head_chetan.jpg" alt="Chetan"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+            style="width:64px;height:64px;border-radius:50%;object-fit:cover;object-position:top;margin:0 auto 16px;display:block;">
+          <div class="head-avatar" style="display:none;">CH</div>
+          <div class="head-name">Chetan</div>
+          <div class="head-role">Ex Club Head</div>
+        </div>
+
+        <div class="head-card">
+          <div class="head-top"></div>
+          <div class="head-badge">ADVISOR</div>
+          <div class="head-avatar">AK</div>
+          <div class="head-name">Ayush Kulkarni</div>
+          <div class="head-role">Chief Advisor</div>
+        </div>
+
+        <div class="head-card">
+          <div class="head-top"></div>
+          <div class="head-badge">SECRETARY</div>
+          <div class="head-avatar">MV</div>
+          <div class="head-name">M. Vishal Reddy</div>
+          <div class="head-role">Club Secretary</div>
+        </div>
+
+        <div class="head-card">
+          <div class="head-top"></div>
+          <div class="head-badge">DEV HEAD</div>
+          <img src="head_varun.jpg" alt="Ramavath Varun"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+            style="width:64px;height:64px;border-radius:50%;object-fit:cover;object-position:top;margin:0 auto 16px;display:block;">
+          <div class="head-avatar" style="display:none;">RV</div>
+          <div class="head-name">Ramavath Varun</div>
+          <div class="head-role">Development Head</div>
+        </div>
+
+        <div class="head-card">
+          <div class="head-top"></div>
+          <div class="head-badge">HEAD</div>
+          <div class="head-avatar">AK</div>
+          <div class="head-name">Akhilesh Kancharla</div>
+          <div class="head-role">Documentation Head</div>
+        </div>
+
+        <div class="head-card">
+          <div class="head-top"></div>
+          <div class="head-badge">DoP</div>
+          <div class="head-avatar">BA</div>
+          <div class="head-name">B. Akshaya Sree</div>
+          <div class="head-role">Director of Photography</div>
+        </div>
+
+        <div class="head-card">
+          <div class="head-top"></div>
+          <div class="head-badge">SM HEAD</div>
+          <div class="head-avatar">HJ</div>
+          <div class="head-name">Hasini Jella</div>
+          <div class="head-role">Social Media Head</div>
+        </div>
+
+        <div class="head-card">
+          <div class="head-top"></div>
+          <div class="head-badge">HEAD</div>
+          <div class="head-avatar">AV</div>
+          <div class="head-name">Angel Vyas</div>
+          <div class="head-role">Hospitality Head</div>
+        </div>
+
+        <div class="head-card">
+          <div class="head-top"></div>
+          <div class="head-badge">PR HEAD</div>
+          <div class="head-avatar">RP</div>
+          <div class="head-name">Rahul Pusapati</div>
+          <div class="head-role">PR Head</div>
+        </div>
+
+        <div class="head-card">
+          <div class="head-top"></div>
+          <div class="head-badge">OUTREACH</div>
+          <div class="head-avatar">AB</div>
+          <div class="head-name">Anvitha Bangalore</div>
+          <div class="head-role">Outreach Manager</div>
+        </div>
+
+        <div class="head-card">
+          <div class="head-top"></div>
+          <div class="head-badge">CONTENT</div>
+          <div class="head-avatar">AT</div>
+          <div class="head-name">Ashwini Tadkale</div>
+          <div class="head-role">Content & Social Manager</div>
+        </div>
+
+        <div class="head-card">
+          <div class="head-top"></div>
+          <div class="head-badge">DoP & CONTENT</div>
+          <div class="head-avatar">SS</div>
+          <div class="head-name">Sanjana Sheetal</div>
+          <div class="head-role">DoP & Content</div>
+        </div>
+
+      </div>
+
+      <!-- MEMBERS PLACEHOLDER GRID -->
+      <div class="members-grid" style="margin-top:8px;">
+        <div class="member-card" data-domain="Tech">
+          <div class="member-avatar">MN</div>
+          <div class="member-name">[MEMBER_NAME]</div>
+          <div class="member-domain">Tech</div>
+        </div>
+        <div class="member-card" data-domain="Design">
+          <div class="member-avatar">MN</div>
+          <div class="member-name">[MEMBER_NAME]</div>
+          <div class="member-domain">Design</div>
+        </div>
+        <div class="member-card" data-domain="Events">
+          <div class="member-avatar">MN</div>
+          <div class="member-name">[MEMBER_NAME]</div>
+          <div class="member-domain">Events</div>
+        </div>
+        <div class="member-card" data-domain="Marketing">
+          <div class="member-avatar">MN</div>
+          <div class="member-name">[MEMBER_NAME]</div>
+          <div class="member-domain">Marketing</div>
+        </div>
+        <div class="member-card" data-domain="Research">
+          <div class="member-avatar">MN</div>
+          <div class="member-name">[MEMBER_NAME]</div>
+          <div class="member-domain">Research</div>
+        </div>
+        <div class="member-card" data-domain="Operations">
+          <div class="member-avatar">MN</div>
+          <div class="member-name">[MEMBER_NAME]</div>
+          <div class="member-domain">Operations</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section id="alumni" class="reveal">
+    <h2 class="section-title">Those Who Built This Foundation</h2>
+    <div class="title-underline"></div>
+    <p class="eco-sub">Our alumni — who served and left their mark</p>
+
+    <div class="alumni-strip-container">
+      <div class="alumni-strip" id="alumni-scroll">
+
+        <!-- Chetan — Ex Club Head (photo available) -->
+        <div class="alumni-card" style="border-color: var(--accent);">
+          <div class="alumni-badge" style="background:var(--accent);color:#000;">⭐ Ex Club Head</div>
+          <img src="head_chetan.jpg" alt="Chetan"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+            style="width:56px;height:56px;border-radius:50%;object-fit:cover;object-position:top;margin:0 auto 12px;display:block;">
+          <div class="alumni-avatar" style="display:none;">CH</div>
+          <div class="alumni-name" style="color:var(--text);">Chetan</div>
+          <div class="alumni-role">Club Head</div>
+          <div class="alumni-years">Past Batch</div>
+        </div>
+
+        <!-- Placeholders — fill in later -->
+        <div class="alumni-card">
+          <div class="alumni-badge">Alumni</div>
+          <div class="alumni-avatar">—</div>
+          <div class="alumni-name">[ALUMNI_NAME]</div>
+          <div class="alumni-role">[ROLE]</div>
+          <div class="alumni-years">20XX – 20XX</div>
+        </div>
+        <div class="alumni-card">
+          <div class="alumni-badge">Alumni</div>
+          <div class="alumni-avatar">—</div>
+          <div class="alumni-name">[ALUMNI_NAME]</div>
+          <div class="alumni-role">[ROLE]</div>
+          <div class="alumni-years">20XX – 20XX</div>
+        </div>
+        <div class="alumni-card">
+          <div class="alumni-badge">Alumni</div>
+          <div class="alumni-avatar">—</div>
+          <div class="alumni-name">[ALUMNI_NAME]</div>
+          <div class="alumni-role">[ROLE]</div>
+          <div class="alumni-years">20XX – 20XX</div>
+        </div>
+        <div class="alumni-card">
+          <div class="alumni-badge">Alumni</div>
+          <div class="alumni-avatar">—</div>
+          <div class="alumni-name">[ALUMNI_NAME]</div>
+          <div class="alumni-role">[ROLE]</div>
+          <div class="alumni-years">20XX – 20XX</div>
+        </div>
+        <div class="alumni-card">
+          <div class="alumni-badge">Alumni</div>
+          <div class="alumni-avatar">—</div>
+          <div class="alumni-name">[ALUMNI_NAME]</div>
+          <div class="alumni-role">[ROLE]</div>
+          <div class="alumni-years">20XX – 20XX</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="reveal">
+    <h2 class="section-title">Want to Join the Incubator?</h2>
+    <div class="title-underline"></div>
+
+    <div class="contact-grid">
+      <div class="contact-info">
+        <div class="contact-item">
+          <div class="contact-icon">✉️</div>
+          <span style="color:var(--text-secondary);font-style:italic;">Email coming soon</span>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">📸</div>
+          <a href="https://www.instagram.com/idea.mgit/" target="_blank" rel="noopener"
+            style="color:var(--text);text-decoration:none;">@idea.mgit</a>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">📍</div>
+          <span>MGIT, Gandipet, Hyderabad – 500 075, Telangana</span>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">🔗</div>
+          <a href="https://www.linkedin.com/company/idea-incubator-mgit-r-d/" target="_blank" rel="noopener"
+            style="color:var(--text);text-decoration:none;">LinkedIn — Idea Incubator MGIT</a>
+        </div>
+      </div>
+
+      <form class="contact-form" id="join-form">
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" required>
+        </div>
+        <div class="form-group">
+          <label for="roll">Roll Number</label>
+          <input type="text" id="roll" required>
+        </div>
+        <div class="form-group">
+          <label for="branch">Branch</label>
+          <select id="branch">
+            <option>CSE</option>
+            <option>CSE(AI/ML)</option>
+            <option>CSE(DS)</option>
+            <option>IT</option>
+            <option>ECE</option>
+            <option>EEE</option>
+            <option>MECH</option>
+            <option>MCT</option>
+            <option>CIVIL</option>
+            <option>MME</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="year">Year</label>
+          <select id="year">
+            <option>1st</option>
+            <option>2nd</option>
+            <option>3rd</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="why">Why do you want to join?</label>
+          <textarea id="why" rows="4" required></textarea>
+        </div>
+        <button type="submit" class="submit-btn" id="submit-btn">Apply Now</button>
+      </form>
+    </div>
+  </section>
+
+  <footer>
+    <img src="ii-logo.jpg" alt="Idea Incubator Logo" class="footer-logo">
+    <div class="footer-name">Idea Incubator</div>
+    <div class="footer-tagline">IDEATE · INNOVATE · IGNITE · INSPIRE</div>
+
+    <div class="footer-links">
+      <a href="#home">Home</a>
+      <a href="#about">About</a>
+      <a href="#ecosystem">Our Ecosystem</a>
+      <a href="#team">Team</a>
+      <a href="#alumni">Alumni</a>
+      <a href="#contact">Contact</a>
+    </div>
+
+    <div class="footer-bottom">
+      <div>Built with ❤️ by Idea Incubator Tech Team</div>
+      <div>© 2019–2025 Idea Incubator MGIT. All Rights Reserved. | Founded 17 April 2019</div>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast">Application submitted! We'll reach out soon 🚀</div>
+
+  <script>
+    // Dark mode
+    const themeToggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+    const isDark = localStorage.getItem('theme') === 'dark';
+
+    if (isDark) {
+      html.setAttribute('data-theme', 'dark');
+      themeToggle.textContent = '☀️';
+    }
+
+    themeToggle.addEventListener('click', () => {
+      const current = html.getAttribute('data-theme');
+      if (current === 'light') {
+        html.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+        themeToggle.textContent = '☀️';
+      } else {
+        html.setAttribute('data-theme', 'light');
+        localStorage.setItem('theme', 'light');
+        themeToggle.textContent = '🌙';
+      }
+    });
+
+    // Mobile Nav
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const mobileLinks = mobileMenu.querySelectorAll('a');
+
+    hamburger.addEventListener('click', () => {
+      const isOpen = mobileMenu.classList.contains('open');
+      if (isOpen) {
+        mobileMenu.classList.remove('open');
+        hamburger.textContent = '☰';
+      } else {
+        mobileMenu.classList.add('open');
+        hamburger.textContent = '✕';
+      }
+    });
+
+    mobileLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.remove('open');
+        hamburger.textContent = '☰';
+      });
+    });
+
+    // Scroll Spy & Navbar Blur
+    const sections = document.querySelectorAll('section');
+    const navLinks = document.querySelectorAll('.nav-links a');
+    const navbar = document.getElementById('navbar');
+
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+
+      let current = '';
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        if (scrollY >= sectionTop - 150) {
+          current = section.getAttribute('id');
+        }
+      });
+
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href').includes(current)) {
+          link.classList.add('active');
+        }
+      });
+    });
+
+    // Scroll Reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    reveals.forEach(reveal => revealObserver.observe(reveal));
+
+    // Stats Counter
+    const statsSection = document.getElementById('stats-section');
+    const statNums = document.querySelectorAll('.stat-num');
+    let counted = false;
+
+    const statsObserver = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting && !counted) {
+        counted = true;
+        statNums.forEach(num => {
+          const target = +num.getAttribute('data-target');
+          const duration = 2000;
+          const increment = target / (duration / 16);
+          let current = 0;
+
+          const updateObj = setInterval(() => {
+            current += increment;
+            if (current >= target) {
+              num.textContent = target + "+";
+              clearInterval(updateObj);
+            } else {
+              num.textContent = Math.ceil(current) + "+";
+            }
+          }, 16);
+        });
+      }
+    }, { threshold: 0.5 });
+
+    if (statsSection) {
+      statsObserver.observe(statsSection);
+    }
+
+    // Team Filter
+    const tabs = document.querySelectorAll('.tab');
+    const headsGrid = document.querySelector('.heads-grid');
+    const membersGrid = document.querySelector('.members-grid');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+
+        const filter = tab.getAttribute('data-filter');
+
+        if (filter === 'all') {
+          headsGrid.style.display = 'grid';
+          membersGrid.style.display = 'grid';
+        } else if (filter === 'heads') {
+          headsGrid.style.display = 'grid';
+          membersGrid.style.display = 'none';
+        } else if (filter === 'members') {
+          headsGrid.style.display = 'none';
+          membersGrid.style.display = 'grid';
+        }
+      });
+    });
+
+    // Alumni Drag Scroll
+    const slider = document.getElementById('alumni-scroll');
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+
+    slider.addEventListener('mousedown', (e) => {
+      isDown = true;
+      slider.style.cursor = 'grabbing';
+      startX = e.pageX - slider.offsetLeft;
+      scrollLeft = slider.scrollLeft;
+    });
+    slider.addEventListener('mouseleave', () => {
+      isDown = false;
+      slider.style.cursor = 'grab';
+    });
+    slider.addEventListener('mouseup', () => {
+      isDown = false;
+      slider.style.cursor = 'grab';
+    });
+    slider.addEventListener('mousemove', (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - slider.offsetLeft;
+      const walk = (x - startX) * 2;
+      slider.scrollLeft = scrollLeft - walk;
+    });
+
+    // Form Toast
+    const form = document.getElementById('join-form');
+    const toast = document.getElementById('toast');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 4000);
+      form.reset();
+    });
+
+
+
+    // ── CUSTOM CURSOR ──
+    const curO = document.getElementById('cursor-outer');
+    const curI = document.getElementById('cursor-inner');
+    let curX = 0, curY = 0, ox = 0, oy = 0;
+    document.addEventListener('mousemove', e => {
+      curX = e.clientX; curY = e.clientY;
+      curI.style.left = curX + 'px'; curI.style.top = curY + 'px';
+    });
+    (function lerpCur() {
+      ox += (curX - ox) * 0.12; oy += (curY - oy) * 0.12;
+      curO.style.left = ox + 'px'; curO.style.top = oy + 'px';
+      requestAnimationFrame(lerpCur);
+    })();
+    document.querySelectorAll('a,button,.tab,.eco-card,.head-card,.member-card,.alumni-card,.face-card,.stat-card,.cta-btn').forEach(el => {
+      el.addEventListener('mouseenter', () => { curO.style.width = '56px'; curO.style.height = '56px'; curO.style.opacity = '1'; });
+      el.addEventListener('mouseleave', () => { curO.style.width = '36px'; curO.style.height = '36px'; curO.style.opacity = '0.6'; });
+    });
+
+    // ── 3D CARD TILT ──
+    document.querySelectorAll('.member-card,.head-card,.alumni-card,.face-card,.eco-card,.stat-card').forEach(card => {
+      card.addEventListener('mousemove', e => {
+        const r = card.getBoundingClientRect();
+        const x = e.clientX - r.left - r.width / 2;
+        const y = e.clientY - r.top - r.height / 2;
+        card.style.transform = `perspective(1000px) rotateX(${(y / r.height) * 8}deg) rotateY(${-(x / r.width) * 8}deg) translateZ(12px)`;
+        card.style.transition = 'transform 0.1s ease';
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px)';
+        card.style.transition = 'transform 0.5s ease';
+      });
+    });
+
+    // ── CANVAS PARTICLE ORB (full-page fixed background) ──
+    (function () {
+      const canvas = document.getElementById('orb-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let lW, lH, mx = window.innerWidth * 0.5, my = window.innerHeight * 0.5;
+      let tRX = 0, tRY = 0, rotX = 0, rotY = 0, autoY = 0, burst = 1;
+
+      function resize() {
+        lW = canvas.width = window.innerWidth;
+        lH = canvas.height = window.innerHeight;
+      }
+
+      // Use fewer particles on mobile for performance
+      const isMob = window.innerWidth <= 768;
+      const N = isMob ? 400 : 800;
+      const PHI = Math.PI * (3 - Math.sqrt(5));
+      const dots = Array.from({ length: N }, (_, i) => {
+        const y = 1 - (i / (N - 1)) * 2;
+        const r = Math.sqrt(1 - y * y);
+        const t = PHI * i;
+        return { ox: Math.cos(t) * r, oy: y, oz: Math.sin(t) * r };
+      });
+
+      // Ambient floaters
+      const ambCount = isMob ? 30 : 60;
+      const ambs = Array.from({ length: ambCount }, () => ({
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        vx: (Math.random() - 0.5) * 0.4,
+        vy: -(Math.random() * 0.6 + 0.2),
+        sz: Math.random() * 2 + 0.5,
+        a: Math.random() * 0.5 + 0.2,
+        col: Math.random() > 0.5
+      }));
+
+      function isDk() { return document.documentElement.getAttribute('data-theme') !== 'light'; }
+
+      function draw(ts) {
+        requestAnimationFrame(draw);
+        if (!lW) { resize(); return; }
+        ctx.clearRect(0, 0, lW, lH);
+
+        // Background gradient
+        const grad = ctx.createRadialGradient(lW / 2, lH / 2, 0, lW / 2, lH / 2, Math.max(lW, lH) * 0.75);
+        if (isDk()) { grad.addColorStop(0, '#0D1526'); grad.addColorStop(1, '#050810'); }
+        else { grad.addColorStop(0, '#C8E6F5'); grad.addColorStop(1, '#E8F4FD'); }
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, lW, lH);
+
+        // Pulse 0.97–1.03 over 4s
+        const pulse = 1 + Math.sin(ts * 0.001571) * 0.03;
+        if (burst > 1) burst += (1 - burst) * 0.06;
+        const orbSize = isMob ? lH * 0.22 : lH * 0.3;
+        const sc = orbSize * pulse * burst;
+
+        // Smooth rotations
+        autoY += 0.004;
+        rotX += (tRX - rotX) * 0.04;
+        rotY += (tRY - rotY) * 0.04;
+        const totalY = autoY + rotY;
+        const cosX = Math.cos(rotX), sinX = Math.sin(rotX);
+        const cosY = Math.cos(totalY), sinY = Math.sin(totalY);
+        // Center the orb
+        const cx = lW * 0.5, cy = lH * 0.5;
+
+        // Project dots
+        const proj = dots.map(d => {
+          let x = d.ox * cosY - d.oz * sinY;
+          let z0 = d.ox * sinY + d.oz * cosY;
+          let y = d.oy * cosX - z0 * sinX;
+          let z = d.oy * sinX + z0 * cosX;
+          return { x: cx + x * sc, y: cy + y * sc, z };
+        });
+
+        // Connections (every 4th dot, skip on mobile)
+        if (!isMob) {
+          ctx.lineWidth = 0.5;
+          for (let i = 0; i < proj.length; i += 4) {
+            for (let j = i + 4; j < proj.length; j += 4) {
+              const dx = proj[i].x - proj[j].x, dy = proj[i].y - proj[j].y;
+              const dist = Math.sqrt(dx * dx + dy * dy);
+              if (dist < 55) {
+                const depth = ((proj[i].z + proj[j].z) / 2 + 1) / 2;
+                const a = (1 - dist / 55) * 0.12 * depth;
+                ctx.beginPath(); ctx.moveTo(proj[i].x, proj[i].y); ctx.lineTo(proj[j].x, proj[j].y);
+                ctx.strokeStyle = isDk() ? `rgba(245,197,24,${a})` : `rgba(0,80,100,${a})`;
+                ctx.stroke();
+              }
+            }
+          }
+        }
+
+        // Dots (sorted by depth)
+        proj.sort((a, b) => a.z - b.z);
+        proj.forEach(p => {
+          const depth = (p.z + 1) / 2;
+          const sz = isDk() ? 0.8 + depth * 2.2 : 0.6 + depth * 1.8;
+          const cr = Math.round(13 + depth * 232), cg = Math.round(148 + depth * 49), cb = Math.round(136 - depth * 112);
+          const ca = isDk() ? 0.15 + depth * 0.85 : 0.1 + depth * 0.65;
+          ctx.beginPath(); ctx.arc(p.x, p.y, sz, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(${cr},${cg},${cb},${ca})`; ctx.fill();
+        });
+
+        // Ambient floaters
+        ambs.forEach(p => {
+          const dx = mx - p.x, dy = my - p.y, dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 100) { p.vx += dx * 0.0004; p.vy += dy * 0.0004; }
+          p.vx *= 0.98; p.vy = p.vy * 0.98 - (p.vy > -0.1 ? 0.02 : 0);
+          p.x += p.vx; p.y += p.vy;
+          if (p.y < -5 || p.x < -10 || p.x > lW + 10) {
+            p.x = Math.random() * lW; p.y = lH + 5;
+            p.vx = (Math.random() - 0.5) * 0.4; p.vy = -(Math.random() * 0.6 + 0.2);
+          }
+          const fade = Math.min(1, p.y / (lH * 0.15));
+          const alpha = p.a * fade * (isDk() ? 1 : 0.45);
+          ctx.beginPath(); ctx.arc(p.x, p.y, p.sz, 0, Math.PI * 2);
+          ctx.fillStyle = p.col ? `rgba(255,255,255,${alpha})` : `rgba(245,197,24,${alpha})`;
+          ctx.fill();
+        });
+      }
+
+      document.addEventListener('mousemove', e => {
+        mx = e.clientX; my = e.clientY;
+        tRY = (e.clientX / window.innerWidth - 0.5) * 0.8;
+        tRX = (e.clientY / window.innerHeight - 0.5) * 0.4;
+      });
+      // Touch support for mobile orb interaction
+      document.addEventListener('touchmove', e => {
+        const t = e.touches[0];
+        mx = t.clientX; my = t.clientY;
+        tRY = (t.clientX / window.innerWidth - 0.5) * 0.8;
+        tRX = (t.clientY / window.innerHeight - 0.5) * 0.4;
+      }, { passive: true });
+      document.addEventListener('click', () => { burst = 1.28; });
+      document.addEventListener('touchstart', () => { burst = 1.28; }, { passive: true });
+      window.addEventListener('resize', resize);
+
+      resize();
+      requestAnimationFrame(draw);
+    })();
+  </script>
+</body>
+
+</html>
